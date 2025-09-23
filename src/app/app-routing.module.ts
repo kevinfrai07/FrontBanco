@@ -1,10 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PersonaComponent } from './modules/personas/persona/persona.component';
+import { ClienteComponent } from './modules/clientes/cliente/cliente.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+    { path: 'personas', component: PersonaComponent },
+    { path: 'clientes', component: ClienteComponent },
+  //{ path: 'cuentas', component: CuentaComponent },
+  //{ path: 'movimientos', component: MovimientoComponent },
+  { path: '', redirectTo: '/personas', pathMatch: 'full' }
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
