@@ -1,22 +1,20 @@
-// src/app/shared/shared.module.ts
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-// Angular Material Modules
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgModule} from '@angular/core';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
+	imports: [
+		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+	],
+	declarations: [
 
-  ],
-  exports: [
-    CommonModule,
-    FormsModule,
-  ],
-  declarations:[
-  ]
+	],
+	exports: [
+		CommonModule,
+		FormsModule,
+	],
 })
+
 export class SharedModule { }

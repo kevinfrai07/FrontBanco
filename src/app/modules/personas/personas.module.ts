@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PersonaComponent } from './persona/persona.component';
 import { PersonaRoutingModule } from './personas-routing.module';
-import { PersonaService } from '../../shared/services/persona/persona.service';
+import { SharedModule } from '../../shared/shared.module';
 @NgModule({
   declarations: [
     PersonaComponent,
@@ -10,10 +10,9 @@ import { PersonaService } from '../../shared/services/persona/persona.service';
   imports: [
     CommonModule,
     PersonaRoutingModule,
-    //ShareModules
+    SharedModule
   ],
   providers: [
-    PersonaService,
   ]
 })
 export class PersonaModule { }

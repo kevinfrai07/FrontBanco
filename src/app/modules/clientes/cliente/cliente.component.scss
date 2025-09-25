@@ -1,0 +1,82 @@
+.clientes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+.clientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clientes-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  color: #0f172a;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.buscar {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-nuevo {
+  background: #facc15; /* Amarillo */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-nuevo:hover {
+  background: #eab308; /* Amarillo más oscuro */
+}
+
+/* Tabla */
+.clientes-tabla table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.clientes-tabla th,
+.clientes-tabla td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.clientes-tabla th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.btn-accion {
+  margin-right: 6px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.btn-accion:hover {
+  background: #1e40af;
+}

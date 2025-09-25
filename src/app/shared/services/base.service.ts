@@ -30,16 +30,15 @@ export abstract class BaseService<TModel, TMasterModel> {
     }
 
   get(endPoint: string, isAut: boolean = false): Observable<ResponseModel<TModel>> {
-    let fullPath = this._apiRoot + endPoint
-    this.ApplicationAut(isAut);
-			return this._httpClient.get(fullPath, { headers: this.headers })
-			.pipe(map((resp:any) => {
-				this.responseModel.mensaje = resp.mensaje;
-				this.responseModel.respuesta = resp.respuesta;
-				this.responseModel.status = resp.status;
-				return this.responseModel;			
-			}));		
-		}
+		let fullPath = this._apiRoot + endPoint
+		this.ApplicationAut(isAut);
+				return this._httpClient.get(fullPath, { headers: this.headers })
+				.pipe(map((resp:any) => {
+					this.responseModel.responseData = resp.responseData;
+					this.responseModel.status = resp.responseStatus;
+					return this.responseModel;			
+				}));		
+	}
 
     post(endPoint: string, object: TModel, isAut: boolean = false): Observable<ResponseModel<TModel>> {
       let fullPath = this._apiRoot + endPoint
@@ -52,5 +51,31 @@ export abstract class BaseService<TModel, TMasterModel> {
 				this.responseModel.responseData = resp.data;
 				return this.responseModel;			
 			}));				
-		}
+	}
+
+	put(endPoint: string, object: TModel, isAut: boolean = false): Observable<ResponseModel<TModel>> {
+      let fullPath = this._apiRoot + endPoint
+			this.ApplicationAut(isAut);
+			return this._httpClient.put(fullPath, object, { headers: this.headers })
+			.pipe(map((resp:any) => {
+				this.responseModel.mensaje = resp.mensaje;
+				this.responseModel.respuesta = resp.respuesta;
+				this.responseModel.status = resp.status;
+				this.responseModel.responseData = resp.data;
+				return this.responseModel;			
+			}));				
+	}
+
+	delete(endPoint: string, object: TModel, isAut: boolean = false): Observable<ResponseModel<TModel>> {
+      let fullPath = this._apiRoot + endPoint
+			this.ApplicationAut(isAut);
+			return this._httpClient.delete(fullPath, { headers: this.headers })
+			.pipe(map((resp:any) => {
+				this.responseModel.mensaje = resp.mensaje;
+				this.responseModel.respuesta = resp.respuesta;
+				this.responseModel.status = resp.status;
+				this.responseModel.responseData = resp.data;
+				return this.responseModel;			
+			}));				
+	}
 }
