@@ -16,8 +16,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre completo</th>
-                    <th>Identificación</th>
                     <th>Genero</th>
+                    <th>Edad</th>
+                    <th>Identificación</th>
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>Acciones</th>
@@ -30,9 +31,10 @@
                     <td>{{ad.genero}}</td>
                     <td>{{ad.edad}}</td>
                     <td>{{ad.identificacion}}</td>
+                    <td>{{ad.direccion}}</td>
                     <td>{{ad.telefono}}</td>
                     <td>
-                        <button>Editar</button>
+                        <button class="btn-accion" (click)="editar(ad)">Editar</button>
                     </td>
                 </tr>
                 <tr *ngIf="filteredPersonas.length === 0">
@@ -42,41 +44,49 @@
         </table>
     </div>
 </div>
-<div *ngIf="showPopup" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7);">
-    <div style="width: 400px; margin: 10% auto; background: #fff; padding: 20px; text-align: center;">
-        <h2>Mi Popup HTML</h2>
-        
-        <form>
-            <label for="nombre">Nombre:</label><br>
-            <input type="text" id="nombre" name="nombre"[(ngModel)]="persona.nombre"><br><br>
-            
-            <div *ngFor="let g of opcionesGenero" class="radio-item">
-                <input
-                type="radio"
-                [id]="'gen-' + g.value"
-                name="genero"                   
-                [(ngModel)]="persona.genero"             
-                [value]="g.value"                
-                required                         
-                />
-                <label [for]="'gen-' + g.value">{{ g.label }}</label>
-            </div>
-            
-            <label for="edad">Edad:</label><br>
-            <input type="number" id="edad" name="edad" [(ngModel)]="persona.edad"><br><br>
-            
-            <label for="identificacion">Identificación:</label><br>
-            <input type="text" id="identificacion" name="identificacion" [(ngModel)]="persona.identificacion"><br><br>
-            
-            <label for="direccion">Dirección:</label><br>
-            <input type="text" id="direccion" name="direccion" [(ngModel)]="persona.direccion"><br><br>
-            
-            <label for="telefono">Teléfono:</label><br>
-            <input type="text" id="telefono" name="telefono" [(ngModel)]="persona.telefono"><br><br>
-            
-            <button (click)="guardar()">Crear</button>
-        </form>
-        
-        <button (click)="close()" style="position: absolute; top: 10px; right: 10px; text-decoration: none;">&times;</button>
-    </div>
+<div *ngIf="showPopup" 
+     style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7);">
+  <div style="width: 400px; margin: 10% auto; background: #fff; padding: 20px; text-align: center; position: relative;">
+    
+    <h2>{{ isEditMode ? 'Editar Persona' : 'Crear Persona' }}</h2>
+    
+    <form>
+      <label for="nombre">Nombre:</label><br>
+      <input type="text" id="nombre" name="nombre" [(ngModel)]="persona.nombre"><br><br>
+      
+      <div *ngFor="let g of opcionesGenero" class="radio-item">
+        <input
+          type="radio"
+          [id]="'gen-' + g.value"
+          name="genero"                   
+          [(ngModel)]="persona.genero"             
+          [value]="g.value"                
+          required                         
+        />
+        <label [for]="'gen-' + g.value">{{ g.label }}</label>
+      </div>
+      
+      <label for="edad">Edad:</label><br>
+      <input type="number" id="edad" name="edad" [(ngModel)]="persona.edad"><br><br>
+      
+      <label for="identificacion">Identificación:</label><br>
+      <input type="text" id="identificacion" name="identificacion" [(ngModel)]="persona.identificacion"><br><br>
+      
+      <label for="direccion">Dirección:</label><br>
+      <input type="text" id="direccion" name="direccion" [(ngModel)]="persona.direccion"><br><br>
+      
+      <label for="telefono">Teléfono:</label><br>
+      <input type="text" id="telefono" name="telefono" [(ngModel)]="persona.telefono"><br><br>
+      
+      <button type="button" class="btn-accion" (click)="guardar()">
+        {{ isEditMode ? 'Actualizar' : 'Crear' }}
+      </button>
+    </form>
+    
+    <button (click)="close()" 
+            style="position: absolute; top: 10px; right: 10px; text-decoration: none;">
+      &times;
+    </button>
+  </div>
 </div>
+

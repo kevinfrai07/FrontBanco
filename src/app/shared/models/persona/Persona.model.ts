@@ -1,4 +1,4 @@
-export interface CreatePersonaModel {
+export interface PersonaModel {
  personaId: 0,
  nombre: string,
  genero: 'M' | 'F' | 'O' | '',

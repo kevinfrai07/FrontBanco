@@ -1,45 +1,81 @@
 <div class="clientes">
-  <!-- Header -->
+    
   <div class="clientes-header">
     <h2>Clientes</h2>
-
+    
     <div class="acciones">
-      <input type="text" placeholder="Buscar" class="buscar" />
-      <button class="btn-nuevo">Nuevo</button>
+      <input type="text" placeholder="Buscar" class="buscar" [(ngModel)]="searchCliente" (input)="onSearchTermChange()"/>
+      <button class="btn-nuevo" (click)="nuevo()">Nuevo</button>
     </div>
   </div>
-
-  <!-- Tabla de clientes (placeholder) -->
+  
   <div class="clientes-tabla">
     <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Nombre</th>
-          <th>Email</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Contraseña</th>
+          <th>Estado</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>001</td>
-          <td>Juan Pérez</td>
-          <td>juanexample.com</td>
+        <tr *ngFor="let c of filteredClientes; let i = index;">
+          <td>{{c.persona.nombre}}</td>
+          <td>{{c.persona.direccion}}</td>
+          <td>{{c.persona.telefono}}</td>
+          <td>{{c.contrasenia}}</td>
+          <td>{{c.estado == '1' ? "Activo" : "Inactivo"}}</td>
           <td>
-            <button class="btn-accion">Editar</button>
-            <button class="btn-accion">Eliminar</button>
+            <button class="btn-accion" (click)="editar(c)">Editar</button>
           </td>
         </tr>
-        <tr>
-          <td>002</td>
-          <td>Maria Gómez</td>
-          <td>mariaexaple.com</td>
-          <td>
-            <button class="btn-accion">Editar</button>
-            <button class="btn-accion">Eliminar</button>
-          </td>
+        <tr *ngIf="filteredClientes.length === 0">
+          <td colspan="10" style="text-align: center">No se encontraron Clientes.</td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div *ngIf="showPopup" class="popup-container">
+  <div class="popup-box">
+    
+    <h2>{{ isEditMode ? 'Editar Cliente' : 'Crear Cliente' }}</h2>
+    
+    <form>
+      <label for="Persona">Persona:</label><br>
+      <p-dropdown
+        [options]="personas"
+        optionLabel="nombre"            
+        optionValue="personaId"
+        name="personaId"     
+        [(ngModel)]="cliente.personaId" 
+        [filter]="true"                 
+        filterBy="nombre,identificacion"
+        placeholder="Seleccione una persona"
+        styleClass="w-full"
+        >
+        <ng-template let-persona pTemplate="item">
+          <div class="persona-option">
+            <strong>{{ persona.nombre }}</strong> - {{ persona.identificacion }}
+          </div>
+        </ng-template>
+      </p-dropdown>
+      
+      <label for="contrasenia">Contraseña:</label><br>
+      <input type="password" id="contrasenia" name="contrasenia" [(ngModel)]="cliente.contrasenia"><br><br>
+            
+      <button type="button" class="btn-accion" (click)="guardar()">
+        {{ isEditMode ? 'Actualizar' : 'Crear' }}
+      </button>
+    </form>
+    
+    <button (click)="close()" 
+            style="position: absolute; top: 10px; right: 10px; text-decoration: none;">
+      &times;
+    </button>
   </div>
 </div>

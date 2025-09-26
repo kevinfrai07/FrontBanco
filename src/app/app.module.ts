@@ -12,6 +12,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { PersonaModule } from './modules/personas/personas.module';
+import { ClienteModule } from './modules/clientes/cliente.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PersonaModule } from './modules/personas/personas.module';
     NgxUiLoaderModule,
     ToastModule,
     BrowserAnimationsModule,
-    PersonaModule
+    PersonaModule,
+    ClienteModule
   ],
   providers: [
   { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },

@@ -3,8 +3,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageService } from 'primeng/api';
 import { PersonaService } from '../../../shared/services/persona/persona.service';
 import { APIENDPOINT } from '../../../config/configuration';
-import { CreatePersonaModel } from '../../../shared/models/persona/CreatePersona.model';
 import { debounceTime, Subject } from 'rxjs';
+import { PersonaModel } from '../../../shared/models/persona/Persona.model';
 
 @Component({
   selector: 'app-persona',
@@ -12,11 +12,12 @@ import { debounceTime, Subject } from 'rxjs';
   styleUrls: ['./persona.component.scss'] 
 })
 export class PersonaComponent implements OnInit {
-  persona: CreatePersonaModel = {} as CreatePersonaModel
+  persona: PersonaModel = {} as PersonaModel
   showPopup = false
+  isEditMode = false;
   searchPersona: string = ''
-  personas: CreatePersonaModel[] = [];
-  filteredPersonas: CreatePersonaModel[] = [];
+  personas: PersonaModel[] = [];
+  filteredPersonas: PersonaModel[] = [];
   
   // opcional: lista para renderizar con *ngFor
   opcionesGenero = [
@@ -63,36 +64,73 @@ export class PersonaComponent implements OnInit {
   }
   
   nuevo(){
-    this.showPopup = true
+    this.persona = {} as PersonaModel;
+    this.isEditMode = false;
+    this.showPopup = true;
+  }
+  
+  editar(persona: PersonaModel) {
+    this.persona = { ...persona };
+    this.isEditMode = true;
+    this.showPopup = true;
   }
   
   close(){
     this.showPopup = false
   }
   
-  guardar(){
-    this.personaService.post(APIENDPOINT.addpersona, this.persona).subscribe({
-      next: (response) => {
-        this.ngxService.stop()
-        this.getPersonas()
-        this.showPopup=false
-        this.persona = {} as CreatePersonaModel;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Excelente!!',
-          detail: `Persona Creada`
-        })
-      },
-      error: (error) => {
-        this.ngxService.stop()
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: `Error no manejado: ${error}`
-        })
-      }
-    });
+  guardar() {
+    this.ngxService.start();
+    
+    if (this.isEditMode) {
+      const endpoint = `${APIENDPOINT.updatepersona}${this.persona.personaId}`;
+      this.personaService.put(endpoint, this.persona).subscribe({
+        next: (response) => {
+          this.ngxService.stop();
+          this.getPersonas();
+          this.showPopup = false;
+          this.persona = {} as PersonaModel;
+          this.isEditMode = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Excelente!!',
+            detail: 'Persona Editada'
+          });
+        },
+        error: (error) => {
+          this.ngxService.stop();
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Error al editar persona: ${error}`
+          });
+        }
+      });
+    } else {
+      this.personaService.post(APIENDPOINT.addpersona, this.persona).subscribe({
+        next: (response) => {
+          this.ngxService.stop();
+          this.getPersonas();
+          this.showPopup = false;
+          this.persona = {} as PersonaModel;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Excelente!!',
+            detail: 'Persona Creada'
+          });
+        },
+        error: (error) => {
+          this.ngxService.stop();
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Error al crear persona: ${error}`
+          });
+        }
+      });
+    }
   }
+  
   filterPersona(){
     const searchTerm = this.searchPersona.toLowerCase();
     
@@ -109,14 +147,14 @@ export class PersonaComponent implements OnInit {
       persona.identificacion?.toLowerCase().includes(searchTerm) ||
       persona.telefono?.toLowerCase().includes(searchTerm)
     );
+    
+    // Aplicar paginación
+    //const start = (this.page - 1) * this.pageSize;
+    //this.filteredPersonas = filteredResults.slice(start, start + this.pageSize);
+  }
   
-  // Aplicar paginación
-  //const start = (this.page - 1) * this.pageSize;
-  //this.filteredPersonas = filteredResults.slice(start, start + this.pageSize);
-}
-
-onSearchTermChange(){
-  this.searchTerm$.next(this.searchPersona.trim().toLowerCase());
-  this.filterPersona();
-}
+  onSearchTermChange(){
+    this.searchTerm$.next(this.searchPersona.trim().toLowerCase());
+    this.filterPersona();
+  }
 }

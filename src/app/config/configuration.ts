@@ -8,5 +8,12 @@ export const APIENDPOINT = {
   updatepersona: 'persona/', // +id
   deletepersona: 'persona/', // +id
 
+  // Clientes
+  getClientes: 'cliente',
+  getclienteById: 'cliente/', // +id
+  addcliente: 'cliente',
+  updatecliente: 'cliente/', // +id
+  deletecliente: 'cliente/', // +id
+
   
 };
