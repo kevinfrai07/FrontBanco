@@ -10,10 +10,25 @@ export const APIENDPOINT = {
 
   // Clientes
   getClientes: 'cliente',
-  getclienteById: 'cliente/', // +id
-  addcliente: 'cliente',
-  updatecliente: 'cliente/', // +id
-  deletecliente: 'cliente/', // +id
+  getClienteById: 'cliente/', // +id
+  addCliente: 'cliente',
+  updateCliente: 'cliente/', // +id
+  deleteCliente: 'cliente/', // +id
 
+  // Cuenta
+  getCuenta: 'cuenta',
+  getCuentaById: 'cuenta/', // +id
+  addCuenta: 'cuenta',
+  updateCuenta: 'cuenta/', // +id
+  deleteCuenta: 'cuenta/', // +id
+
+
+  // Movimientos
+  getMovimientos: 'movimientos',
+  getMovimientosByCliente: 'movimientos/reporte/', // +id
+  addMovimientos: 'movimientos',
+
+  // Reportes
+  addReportes: 'reportes',
   
 };

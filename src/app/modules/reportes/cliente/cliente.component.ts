@@ -81,7 +81,7 @@ export class ClienteComponent {
     this.ngxService.start();
 
     if (this.isEditMode) {
-      const endpoint = `${APIENDPOINT.updateCliente}${this.cliente.clienteId}`;
+      const endpoint = `${APIENDPOINT.updatecliente}${this.cliente.clienteId}`;
       this.clienteService.put(endpoint, this.cliente).subscribe({
         next: () => {
           this.ngxService.stop();
@@ -106,7 +106,7 @@ export class ClienteComponent {
       });
     } else {
       this.cliente.estado = "1"
-      this.clienteService.post(APIENDPOINT.addCliente, this.cliente).subscribe({
+      this.clienteService.post(APIENDPOINT.addcliente, this.cliente).subscribe({
         next: () => {
           this.ngxService.stop();
           this.getClientes();

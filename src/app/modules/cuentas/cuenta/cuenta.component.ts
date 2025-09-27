@@ -1,53 +1,53 @@
 import { Component } from '@angular/core';
-import { ClienteModel } from '../../../shared/models/cliente/Cliente.model';
 import { debounceTime, Subject } from 'rxjs';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageService } from 'primeng/api';
 import { APIENDPOINT } from '../../../config/configuration';
+import { ClienteModel } from '../../../shared/models/cliente/Cliente.model';
 import { ClienteService } from '../../../shared/services/cliente/cliente.service';
-import { PersonaModel } from '../../../shared/models/persona/Persona.model';
-import { PersonaService } from '../../../shared/services/persona/persona.service';
+import { CuentaModel } from '../../../shared/models/cuenta/Cuenta.model';
+import { CuentaService } from '../../../shared/services/cuenta/cuenta.service';
 
 @Component({
-  selector: 'app-cliente',
-  templateUrl: './cliente.component.html',
-  styleUrl: './cliente.component.scss'
+  selector: 'app-cuenta',
+  templateUrl: './cuenta.component.html',
+  styleUrl: './cuenta.component.scss'
 })
-export class ClienteComponent {
-  cliente: ClienteModel = {} as ClienteModel;
+export class CuentaComponent {
+  cuenta: CuentaModel = {} as CuentaModel;
   showPopup = false;
   isEditMode = false;
-  searchCliente: string = '';
+  searchCuenta: string = '';
+  cuentas: CuentaModel[] = [];
   clientes: ClienteModel[] = [];
-  personas: PersonaModel[] = [];
-  filteredClientes: ClienteModel[] = [];
+  filteredCuentas: CuentaModel[] = [];
 
   private searchTerm$ = new Subject<string>();
 
   constructor(
+    private cuentaService: CuentaService,
     private clienteService: ClienteService,
-    private personaService: PersonaService,
     private ngxService: NgxUiLoaderService,
     private messageService: MessageService
   ) {
     this.searchTerm$.pipe(debounceTime(300)).subscribe(() => {
-      this.filterCliente();
+      this.filterCuenta();
     });
   }
 
   ngOnInit(): void {
+    this.getCuentas();
     this.getClientes();
-    this.getPersonas(); 
   }
 
-  getClientes() {
+  getCuentas() {
     this.ngxService.start();
-    this.clienteService.get(APIENDPOINT.getClientes).subscribe({
+    this.cuentaService.get(APIENDPOINT.getCuenta).subscribe({
       next: (data) => {
         this.ngxService.stop();
         if (data && data.responseData && data.responseData.length > 0) {
-          this.clientes = data.responseData;
-          this.filteredClientes = [...this.clientes];
+          this.cuentas = data.responseData;
+          this.filteredCuentas = [...this.cuentas];
         }
       },
       error: (error) => {
@@ -55,20 +55,20 @@ export class ClienteComponent {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error al obtener clientes: ' + error
+          detail: 'Error al obtener cuentas: ' + error
         });
       }
     });
   }
 
   nuevo() {
-    this.cliente = {} as ClienteModel;
+    this.cuenta = {} as CuentaModel;
     this.isEditMode = false;
     this.showPopup = true;
   }
 
-  editar(cliente: ClienteModel) {
-    this.cliente = { ...cliente };
+  editar(cuenta: CuentaModel) {
+    this.cuenta = { ...cuenta };
     this.isEditMode = true;
     this.showPopup = true;
   }
@@ -81,18 +81,18 @@ export class ClienteComponent {
     this.ngxService.start();
 
     if (this.isEditMode) {
-      const endpoint = `${APIENDPOINT.updateCliente}${this.cliente.clienteId}`;
-      this.clienteService.put(endpoint, this.cliente).subscribe({
+      const endpoint = `${APIENDPOINT.updateCuenta}${this.cuenta.numeroCuenta}`;
+      this.cuentaService.put(endpoint, this.cuenta).subscribe({
         next: () => {
           this.ngxService.stop();
-          this.getClientes();
+          this.getCuentas();
           this.showPopup = false;
-          this.cliente = {} as ClienteModel;
+          this.cuenta = {} as CuentaModel;
           this.isEditMode = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Excelente!!',
-            detail: 'Cliente Editado'
+            detail: 'Cuenta Editada'
           });
         },
         error: (error) => {
@@ -100,22 +100,22 @@ export class ClienteComponent {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: `Error al editar cliente: ${error}`
+            detail: `Error al editar cuenta: ${error}`
           });
         }
       });
     } else {
-      this.cliente.estado = "1"
-      this.clienteService.post(APIENDPOINT.addCliente, this.cliente).subscribe({
+      this.cuenta.estado = "1";
+      this.cuentaService.post(APIENDPOINT.addCuenta, this.cuenta).subscribe({
         next: () => {
           this.ngxService.stop();
-          this.getClientes();
+          this.getCuentas();
           this.showPopup = false;
-          this.cliente = {} as ClienteModel;
+          this.cuenta = {} as CuentaModel;
           this.messageService.add({
             severity: 'success',
             summary: 'Excelente!!',
-            detail: 'Cliente Creado'
+            detail: 'Cuenta Creada'
           });
         },
         error: (error) => {
@@ -123,46 +123,46 @@ export class ClienteComponent {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: `Error al crear cliente: ${error}`
+            detail: `Error al crear cuenta: ${error}`
           });
         }
       });
     }
   }
 
-  filterCliente() {
-    const searchTerm = this.searchCliente.toLowerCase();
+  filterCuenta() {
+    const searchTerm = this.searchCuenta.toLowerCase();
 
     if (!searchTerm) {
-      this.filteredClientes = [...this.clientes];
+      this.filteredCuentas = [...this.cuentas];
       return;
     }
 
-    this.filteredClientes = this.clientes.filter(cliente =>
-      cliente.clienteId?.toString().toLowerCase().includes(searchTerm) ||
-      cliente.personaId?.toString().toLowerCase().includes(searchTerm) ||
-      cliente.contrasenia?.toLowerCase().includes(searchTerm) ||
-      cliente.estado?.toLowerCase().includes(searchTerm)
+    this.filteredCuentas = this.cuentas.filter(cuenta =>
+      cuenta.numeroCuenta?.toString().toLowerCase().includes(searchTerm) ||
+      cuenta.clienteId?.toString().toLowerCase().includes(searchTerm) ||
+      cuenta.tipoCuenta?.toLowerCase().includes(searchTerm) ||
+      cuenta.estado?.toLowerCase().includes(searchTerm)
     );
   }
 
   onSearchTermChange() {
-    this.searchTerm$.next(this.searchCliente.trim().toLowerCase());
-    this.filterCliente();
+    this.searchTerm$.next(this.searchCuenta.trim().toLowerCase());
+    this.filterCuenta();
   }
 
-  getPersonas() {
-    this.personaService.get(APIENDPOINT.getPersonas).subscribe({
+  getClientes() {
+    this.clienteService.get(APIENDPOINT.getClientes).subscribe({
       next: (data) => {
         if (data && data.responseData && data.responseData.length > 0) {
-          this.personas = data.responseData;
+          this.clientes = data.responseData;
         }
       },
       error: (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error al obtener personas: ' + error
+          detail: 'Error al obtener clientes: ' + error
         });
       }
     });

@@ -1,0 +1,122 @@
+.header {
+  margin-bottom: 1rem;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+
+  input[type="text"] {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  th {
+    background: #f4f6f8;
+    font-weight: bold;
+    color: #333;
+  }
+
+  tr:hover {
+    background: #f9fafb;
+  }
+
+  .no-data {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+  }
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 420px;
+  max-width: 95%;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+
+  h3 {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1rem;
+
+    .btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+  }
+}
+
+.icon {
+  margin-right: 6px;
+  font-size: 1.2rem;
+  vertical-align: middle;
+}

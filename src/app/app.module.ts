@@ -13,6 +13,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { PersonaModule } from './modules/personas/personas.module';
 import { ClienteModule } from './modules/clientes/cliente.module';
+import { CuentaModule } from './modules/cuentas/cuenta.module';
+import { MovimientoModule } from './modules/movimientos/movimiento.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { ClienteModule } from './modules/clientes/cliente.module';
     ToastModule,
     BrowserAnimationsModule,
     PersonaModule,
-    ClienteModule
+    ClienteModule,
+    CuentaModule,
+    MovimientoModule
   ],
   providers: [
   { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },

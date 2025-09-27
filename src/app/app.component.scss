@@ -14,6 +14,15 @@
   box-sizing: border-box;
 }
 
+.header {
+  background-color: white;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
+  border-bottom: 1px solid #d1d5db;
+}
+
 html,
 body,
 app-root {

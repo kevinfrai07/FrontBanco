@@ -1,0 +1,105 @@
+<div class="header">
+  <h2>Movimientos</h2>
+</div>
+
+<div class="actions">
+  <input
+    type="text"
+    placeholder="Buscar movimiento..."
+    [(ngModel)]="searchMovimiento"
+    (input)="onSearchTermChange()"
+  />
+  <button (click)="nuevo()" class="btn btn-primary">Nuevo</button>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Número Cuenta</th>
+      <th>Tipo Movimiento</th>
+      <th>Saldo Inicial</th>
+      <th>Estado</th>
+      <th>Movimiento</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let mov of filteredMovimientos">
+      <td>{{ mov.numeroCuenta }}</td>
+      <td>{{ mov.tipoMovimiento }}</td>
+      <td>{{ mov.saldoInicial | currency:'COP':'symbol-narrow' }}</td>
+      <td>{{ mov.estado === '1' ? 'Activo' : 'Inactivo' }}</td>
+      <td>{{ mov.movimiento }}</td>
+    </tr>
+    <tr *ngIf="filteredMovimientos.length === 0">
+      <td colspan="5">No se encontraron movimientos.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Popup Modal (solo creación) -->
+<div *ngIf="showPopup" class="popup">
+  <div class="popup-content">
+    <h3>Nuevo Movimiento</h3>
+
+    <form (ngSubmit)="guardar()" #movForm="ngForm">
+      <div class="form-group">
+        <label for="numeroCuenta">Número Cuenta</label>
+        <input
+          id="numeroCuenta"
+          type="text"
+          [(ngModel)]="movimiento.numeroCuenta"
+          name="numeroCuenta"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="tipoMovimiento">Tipo Movimiento</label>
+        <select
+          id="tipoMovimiento"
+          [(ngModel)]="movimiento.tipoMovimiento"
+          name="tipoMovimiento"
+          required
+        >
+          <option value="Débito">Débito</option>
+          <option value="Crédito">Crédito</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="saldoInicial">Saldo Inicial</label>
+        <input
+          id="saldoInicial"
+          type="number"
+          [(ngModel)]="movimiento.saldoInicial"
+          name="saldoInicial"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="estado">Estado</label>
+        <select id="estado" [(ngModel)]="movimiento.estado" name="estado" required>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="movimiento">Movimiento</label>
+        <input
+          id="movimiento"
+          type="text"
+          [(ngModel)]="movimiento.movimiento"
+          name="movimiento"
+          required
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success">Crear</button>
+        <button type="button" (click)="close()" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

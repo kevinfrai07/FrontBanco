@@ -1,0 +1,121 @@
+<div class="header">
+  <h2>Cuentas</h2>
+</div>
+
+<div class="actions">
+  <input
+    type="text"
+    placeholder="Buscar cuenta..."
+    [(ngModel)]="searchCuenta"
+    (input)="onSearchTermChange()"
+  />
+  <button (click)="nuevo()" class="btn btn-primary">Nueva</button>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Número Cuenta</th>
+      <th>Cliente</th>
+      <th>Tipo</th>
+      <th>Saldo Inicial</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cuenta of filteredCuentas">
+      <td>{{ cuenta.numeroCuenta }}</td>
+      <td>
+        {{cuenta.cliente}}
+      </td>
+      <td>{{ cuenta.tipoCuenta }}</td>
+      <td>{{ cuenta.saldoInicial | currency }}</td>
+      <td>{{ cuenta.estado === '1' ? 'Activo' : 'Inactivo' }}</td>
+      <td>
+        <button (click)="editar(cuenta)" class="btn btn-warning btn-sm">
+          Editar
+        </button>
+      </td>
+    </tr>
+    <tr *ngIf="filteredCuentas.length === 0">
+      <td colspan="6">No se encontraron cuentas.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Popup Modal -->
+<div *ngIf="showPopup" class="popup">
+  <div class="popup-content">
+    <h3>{{ isEditMode ? 'Editar Cuenta' : 'Nueva Cuenta' }}</h3>
+
+    <form (ngSubmit)="guardar()" #cuentaForm="ngForm">
+      <div class="form-group">
+        <label for="numeroCuenta">Número Cuenta</label>
+        <input
+          id="numeroCuenta"
+          type="text"
+          [(ngModel)]="cuenta.numeroCuenta"
+          name="numeroCuenta"
+          required
+          [readonly]="isEditMode"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="clienteId">Cliente</label>
+        <select
+          id="clienteId"
+          [(ngModel)]="cuenta.clienteId"
+          name="clienteId"
+          required
+        >
+          <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">
+            {{ cliente.personaId }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tipoCuenta">Tipo Cuenta</label>
+        <select
+          id="tipoCuenta"
+          [(ngModel)]="cuenta.tipoCuenta"
+          name="tipoCuenta"
+          required
+        >
+          <option value="Ahorro">Ahorro</option>
+          <option value="Corriente">Corriente</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="saldoInicial">Saldo Inicial</label>
+        <input
+          id="saldoInicial"
+          type="number"
+          [(ngModel)]="cuenta.saldoInicial"
+          name="saldoInicial"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="estado">Estado</label>
+        <select id="estado" [(ngModel)]="cuenta.estado" name="estado" required>
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-success">
+          {{ isEditMode ? 'Guardar Cambios' : 'Crear' }}
+        </button>
+        <button type="button" (click)="close()" class="btn btn-secondary">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
